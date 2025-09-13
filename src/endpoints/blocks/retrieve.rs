@@ -67,6 +67,8 @@ impl BlocksEndpoint {
             .await
             .map_err(|e| NotionClientError::FailedToText { source: e })?;
 
+        println!("Body: {:#?}", body);
+
         let response = serde_json::from_str(&body)
             .map_err(|e| NotionClientError::FailedToDeserialize { source: e, body })?;
 

@@ -27,7 +27,7 @@ pub struct Database {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-#[serde(tag = "type", rename_all = "snake_case")]
+#[serde(rename_all = "snake_case", untagged)]
 pub enum Icon {
     #[default]
     None,
@@ -268,7 +268,7 @@ pub enum RollupFunction {
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct StatusPropertyValue {
-    pub options: Vec<SelectPropertyValue>,
+    pub options: Vec<OptionValue>,
     pub groups: Vec<Group>,
 }
 

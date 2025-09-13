@@ -2,7 +2,13 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
-use super::{emoji::Emoji, file::File, parent::Parent, rich_text::RichText, user::User};
+use super::{
+    emoji::Emoji,
+    file::File,
+    parent::{HostedFile, Parent},
+    rich_text::RichText,
+    user::User,
+};
 
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
@@ -122,6 +128,9 @@ pub enum BlockType {
         link_to_page: Parent,
     },
     Unsupported,
+    Audio {
+        audio: AudioValue,
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
@@ -304,6 +313,12 @@ pub struct ToggleValue {
 pub struct VideoValue {
     #[serde(flatten)]
     pub file_type: File,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+pub struct AudioValue {
+    pub caption: Vec<RichText>,
+    pub file: HostedFile,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
@@ -606,6 +621,7 @@ impl BlockType {
                 items
             }
             BlockType::Video { video: _ } => vec![],
+            BlockType::Audio { audio: _ } => vec![],
             BlockType::LinkToPage { link_to_page: _ } => vec![],
             BlockType::Unsupported => vec![],
         }
